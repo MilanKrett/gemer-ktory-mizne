@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gemer, ktorý mizne — archív miznúcich dedín</title>
+<meta name="description" content="Gemer, ktorý mizne: fotografický archív dedín Gemera a Malohontu, ktoré sa vyľudňujú. Rimavská Sobota kedysi a dnes — a priestor, kam môže ktokoľvek pridať fotku svojej obce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#211D18; --paper:#F3EDE1; --paper-d:#E7DCC4; --paper-xl:#FAF6EC;
+  --sepia:#8B6F47; --sepia-d:#5F4A2C; --sepia-l:#EFE3C9;
+  --rust:#A8462F; --rust-d:#832F1D;
+  --muted:#6E6355; --line:#DCD0B4; --card:#FFFFFF;
+  --r:16px; --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.6;font-size:17px}
+img{max-width:100%;display:block}
+a{color:var(--rust-d)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);line-height:1.15;margin:0 0 .4em;font-weight:700}
+h2{font-size:clamp(1.5rem,3vw,2.1rem)}
+h3{font-size:1.1rem}
+p{margin:0 0 1em}
+.muted{color:var(--muted)}
+.lead{font-size:1.08rem;max-width:680px}
+section{padding:52px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sepia-d);margin-bottom:8px}
+.eyebrow::before{content:"";width:20px;height:3px;background:var(--rust);border-radius:2px}
+
+header{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1000}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.05rem;white-space:nowrap}
+.brand .mark{width:36px;height:36px;border-radius:50%;background:var(--sepia-d);color:var(--paper-xl);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:.95rem;flex:none}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px}
+.nav ul a{text-decoration:none;color:var(--ink);font-weight:600;font-size:.9rem}
+.nav ul a:hover{color:var(--rust-d)}
+.btn{display:inline-block;background:var(--rust);color:#fff;font-weight:700;padding:12px 20px;border-radius:11px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;font-size:.96rem;transition:.15s;line-height:1.2}
+.btn:hover{background:var(--rust-d)}
+.btn.ghost{background:transparent;color:var(--sepia-d);border:2px solid var(--sepia)}
+.btn.ghost:hover{background:var(--sepia-l)}
+.btn.sm{padding:9px 15px;font-size:.88rem}
+.btn[disabled]{opacity:.6;cursor:wait}
+@media(max-width:760px){.nav ul{display:none}}
+
+.hero{padding:44px 0 40px}
+.hero h1{font-size:clamp(1.9rem,4.2vw,2.7rem);font-weight:800;letter-spacing:-.01em;max-width:760px}
+.hero h1 em{font-style:italic;color:var(--rust)}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 0}
+
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:700px){.g3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.card h3{margin-bottom:4px;font-size:1.02rem}
+.card p{margin:0;font-size:.94rem;color:var(--muted)}
+.card .k{font-family:var(--serif);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rust-d);display:block;margin-bottom:4px}
+
+.compare-block{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.compare{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r);border:1px solid var(--line);background:var(--paper-d);user-select:none}
+.compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.compare-before-wrap{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
+.compare-label{position:absolute;top:12px;background:rgba(33,29,24,.72);color:#fff;font-family:var(--serif);font-weight:700;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;pointer-events:none;z-index:3}
+.compare-label.left{left:12px}
+.compare-label.right{right:12px}
+.compare-handle{position:absolute;top:0;bottom:0;width:3px;background:#fff;left:50%;transform:translateX(-50%);pointer-events:none;z-index:2;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.compare-handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.compare input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:4}
+.compare-empty{display:none;position:absolute;inset:0;z-index:5;background:var(--paper-d);align-items:center;justify-content:center;text-align:center;padding:20px}
+.compare.missing .compare-empty{display:flex}
+.compare.missing .compare-handle,.compare.missing .compare-label{display:none}
+.compare-empty .box{max-width:320px}
+.compare-empty h4{font-family:var(--serif);margin:0 0 6px;font-size:1.05rem}
+.compare-empty code{display:block;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 9px;margin:4px 0;font-size:.8rem}
+
+/* formulár na pridanie fotky */
+.upload{background:var(--paper-xl);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+form{display:grid;gap:12px}
+label{font-weight:700;font-size:.9rem}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #C9C3AE;border-radius:11px;font:inherit;background:#fff;color:var(--ink)}
+input[type=file]{padding:9px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.two{grid-template-columns:1fr}}
+.note{font-size:.85rem;color:var(--muted);margin:2px 0 0}
+.thanks{display:none;background:var(--sepia-l);border:1px solid var(--sepia);border-radius:var(--r);padding:20px;margin-top:14px}
+.thanks.on{display:block}
+
+.villages{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.village{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:.85rem;font-weight:600;color:var(--muted)}
+.village.pilot{border-color:var(--rust);color:var(--rust-d)}
+
+footer{padding:28px 0;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#"><span class="mark">GM</span>Gemer, ktorý mizne</a>
+    <ul>
+      <li><a href="#rimava">Rimavská Sobota</a></li>
+      <li><a href="#pridaj">Pridaj fotku</a></li>
+    </ul>
+    <a class="btn sm" href="#pridaj">Pridaj fotku obce</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Gemer a Malohont · kategória Umenie · Blue Challenge 2026</span>
+    <h1>Dediny miznú potichu. <em>Tento archív ich zachytí skôr, ako zmiznú úplne.</em></h1>
+    <p class="lead">Fotografický archív porovnáva to isté miesto v troch časoch — minulosť podľa starých fotografií a rozprávania, súčasnosť taká, aká je, a dve vízie budúcnosti. Prvé miesto je Rimavská Sobota; ďalšie obce pridávajú ľudia z regiónu.</p>
+    <div class="cta">
+      <a class="btn" href="#rimava">Rimavská Sobota — kedysi a dnes</a>
+      <a class="btn ghost" href="#pridaj">Pridať fotku svojej obce</a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="grid g3">
+      <div class="card"><span class="k">Minulosť</span><h3>Staré fotky a spomienky</h3><p>Rodinné albumy a rozprávanie pamätníkov, ako to tu žilo pred päťdesiatimi rokmi.</p></div>
+      <div class="card"><span class="k">Súčasnosť</span><h3>Ako to vyzerá dnes</h3><p>Fotografie dnešného stavu tých istých miest a portréty posledných obyvateľov.</p></div>
+      <div class="card"><span class="k">Budúcnosť</span><h3>Dve možné vízie</h3><p>Čo zostane, ak sa nič nezmení — a čo môže vzniknúť, ak sa dedina oživí.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="rimava" class="compare-block">
+  <div class="wrap">
+    <span class="eyebrow">Pilotné miesto</span>
+    <h2>Rimavská Sobota — potiahnite a porovnajte</h2>
+    <div class="compare" id="compare1">
+      <img class="compare-after" src="fotky/rs-sucasnost-hero.jpg" alt="Rimavská Sobota dnes">
+      <div class="compare-before-wrap">
+        <img class="compare-before" src="fotky/rs-minulost-hero.jpg" alt="Rimavská Sobota v minulosti">
+      </div>
+      <span class="compare-label left">Minulosť</span>
+      <span class="compare-label right">Dnes</span>
+      <div class="compare-handle"></div>
+      <input type="range" min="0" max="100" value="50" aria-label="Posúvač porovnania minulosť/súčasnosť" oninput="setCompare('compare1', this.value)">
+      <div class="compare-empty">
+        <div class="box">
+          <h4>Sem príde fotka Rimavskej Soboty</h4>
+          <p>Vlož do <code>fotky/</code> presne tieto dva súbory:</p>
+          <code>fotky/rs-minulost-hero.jpg</code>
+          <code>fotky/rs-sucasnost-hero.jpg</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pridaj">
+  <div class="wrap">
+    <span class="eyebrow">Archív rastie s pomocou regiónu</span>
+    <h2>Máš fotku svojej obce? Pridaj ju do archívu</h2>
+    <p class="lead">Archív nemá vzniknúť len z mojich fotiek. Ak máš starú fotografiu svojej dediny z albumu, alebo chceš odfotiť, ako to tam vyzerá dnes, pošli ju — po overení pribudne do archívu aj na putovnú výstavu.</p>
+    <div class="upload">
+      <form id="f-foto" action="https://formsubmit.co/gemerktorymizne@gmail.com" method="POST" enctype="multipart/form-data">
+        <div class="two">
+          <div><label for="obec">Obec / mesto *</label><input id="obec" name="obec" required placeholder="napr. Hodejov"></div>
+          <div><label for="obdobie">Obdobie fotky *</label><select id="obdobie" name="obdobie" required><option>Minulosť (stará fotka)</option><option>Súčasnosť (dnešný stav)</option></select></div>
+        </div>
+        <div><label for="foto">Fotografia *</label><input id="foto" name="attachment" type="file" accept="image/*" required></div>
+        <div class="two">
+          <div><label for="meno">Meno (nepovinné)</label><input id="meno" name="meno" placeholder="ak chceš byť pri fotke uvedený/á"></div>
+          <div><label for="email">E-mail (nepovinné)</label><input id="email" name="email" type="email" placeholder="ak sa mám ozvať späť"></div>
+        </div>
+        <div><label for="sprava">O fotke (nepovinné)</label><textarea id="sprava" name="sprava" rows="2" placeholder="čo je na fotke, odkedy je, kto na nej je…"></textarea></div>
+        <input type="hidden" name="_subject" value="Gemer, ktorý mizne — nová fotka">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <button class="btn" type="submit">Odoslať fotku</button>
+        <p class="note">Fotka sa pošle na e-mail projektu (do 5 MB). Po odoslaní ťa presmeruje na potvrdenie.</p>
+      </form>
+    </div>
+    <p class="note" style="margin-top:16px">Ďalšie obce Gemera a Malohontu, kam archív postupne smeruje:</p>
+    <div class="villages">
+      <span class="village pilot">Rimavská Sobota — pilot</span>
+      <span class="village">Hodejov</span>
+      <span class="village">Rimavské Janovce</span>
+      <span class="village">Gemerský Jablonec</span>
+      <span class="village">Hrachovo</span>
+      <span class="village">Kráľ</span>
+      <span class="village">Rimavská Baňa</span>
+      <span class="village">Bátka</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Gemer, ktorý mizne · projekt pre Tatra Academy Blue Challenge 2026, kategória Umenie</span>
+  </div>
+</footer>
+
+<script>
+function phMissing(img){ img.closest('.compare').classList.add('missing'); }
+function sweepMissingImages(){
+  document.querySelectorAll('.compare img').forEach(img => { if (img.complete && img.naturalWidth === 0) phMissing(img); });
+}
+document.addEventListener('error', e => { if (e.target.tagName === 'IMG') sweepMissingImages(); }, true);
+window.addEventListener('load', sweepMissingImages);
+setTimeout(sweepMissingImages, 400);
+function setCompare(id, v){
+  const c = document.getElementById(id);
+  c.querySelector('.compare-before-wrap').style.clipPath = `inset(0 ${100-v}% 0 0)`;
+  c.querySelector('.compare-handle').style.left = v + '%';
+}
+</script>
+</body>
+</html>

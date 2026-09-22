@@ -1,0 +1,16 @@
+Sem daj SVOJE dve hlavné fotky Rimavskej Soboty pre porovnávací slider na stránke —
+presne pod týmito názvami, stránka ich sama nájde a zobrazí:
+
+  rs-minulost-hero.jpg      — stará fotka mesta
+  rs-sucasnost-hero.jpg     — dnešná fotka toho istého miesta (ideálne z rovnakého uhla)
+
+Kým tam fotky nie sú, stránka namiesto rozbitého obrázka ukáže pekné miesto s presným
+názvom súboru, ktorý čaká. Stačí súbor s daným menom skopírovať sem a obnoviť stránku (F5).
+
+Formát: .jpg (ak máš .png alebo .jpeg, napíš mi, upravím to v kóde).
+
+Fotky OSTATNÝCH obcí a od iných ľudí už nejdú sem do priečinka — tie chodia cez
+formulár "Pridaj fotku" priamo na stránke, ktorý ich pošle e-mailom na
+gemerktorymizne@gmail.com. Túto schránku treba ešte založiť a pri prvom odoslaní
+formulára kliknúť na aktivačný e-mail od FormSubmit (rovnaký krok ako pri
+Adoptuj potok a Sadni si na lúku).
