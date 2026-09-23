@@ -17,13 +17,14 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.55;font-size:16px}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:#c5ad88;line-height:1.55;font-size:16px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:#c5ad88 url(logo/pozadie.jpg) center/cover no-repeat}
 img{display:block;max-width:100%}
 a{color:var(--rust-d)}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
 h1,h2,h3{font-family:var(--serif);line-height:1.15;margin:0;font-weight:700}
 
-header{position:sticky;top:0;z-index:50;background:rgba(243,237,225,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:50;background:rgba(243,237,225,.82);backdrop-filter:blur(8px);border-bottom:1px solid rgba(95,74,44,.25)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.05rem;white-space:nowrap}
 .brand .erb{width:36px;height:36px;border-radius:50%;flex:none}
@@ -39,7 +40,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(243,237,225,.94);backdro
 
 .hero{padding:44px 0 18px}
 .hero h1{font-size:clamp(2.1rem,6vw,3.4rem);margin-bottom:10px}
-.hero p{margin:0;color:var(--muted);font-size:1.08rem;max-width:560px}
+.hero p{margin:0;color:#3d3328;font-size:1.08rem;max-width:560px}
 
 .chips{display:flex;gap:8px;flex-wrap:wrap;padding:18px 0 22px}
 .chips button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:500 .9rem var(--sans);cursor:pointer}
@@ -47,7 +48,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(243,237,225,.94);backdro
 .chips span{opacity:.6;margin-left:4px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding-bottom:56px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card{background:var(--card);border:1px solid rgba(95,74,44,.25);box-shadow:0 6px 18px rgba(60,40,20,.18);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .cmp{position:relative;aspect-ratio:4/3;overflow:hidden;background:#d8ccb4;touch-action:pan-y;user-select:none}
 .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cmp .old{clip-path:inset(0 calc(100% - var(--p,50%)) 0 0);filter:sepia(.15)}
@@ -82,7 +83,7 @@ dialog .cmp .lb.r{right:56px}
 .x{position:absolute;right:10px;top:10px;z-index:3;width:36px;height:36px;border-radius:50%;border:0;background:#000a;color:#fff;font-size:1.2rem;cursor:pointer}
 
 
-footer{background:var(--ink);color:#d9cfbd;padding:28px 0;font-size:.85rem}
+footer{background:rgba(33,29,24,.92);color:#d9cfbd;padding:28px 0;font-size:.85rem}
 footer a{color:#fff}
 footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
 </style>
