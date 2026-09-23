@@ -24,7 +24,8 @@ a{color:var(--rust-d)}
 .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
 h1,h2,h3{font-family:var(--serif);line-height:1.15;margin:0;font-weight:700}
 
-header{position:sticky;top:0;z-index:50;background:#b8966c url(logo/lista.jpg) center/cover;border-bottom:2px solid #6b4428;box-shadow:0 3px 12px rgba(30,15,5,.3)}
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(3px);border-bottom:2px solid rgba(107,68,40,.7);box-shadow:0 3px 12px rgba(30,15,5,.25)}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background:#b8966c url(logo/lista.jpg) center/cover;opacity:.72}
 header .brand{color:#2b1a0f}
 .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.05rem;white-space:nowrap}
