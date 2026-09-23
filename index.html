@@ -152,7 +152,7 @@ dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 
 // --- približovanie fotiek ---
 const zv=document.getElementById('zv'),zi=document.getElementById('zi');
-let zs=1,zx=0,zy=0;const pts=new Map();let last=null,pinch=null;
+let zs=1,zx=0,zy=0;const pts=new Map();let last=null,pinch=null,moved=0,downAt=null;
 function zApply(){zi.style.transform=`translate(calc(-50% + ${zx}px),calc(-50% + ${zy}px)) scale(${zs})`}
 function zSet(s,cx,cy){s=Math.min(8,Math.max(1,s));if(cx!==undefined){const r=zv.getBoundingClientRect(),ox=cx-r.width/2,oy=cy-r.height/2;zx=ox-(ox-zx)*s/zs;zy=oy-(oy-zy)*s/zs}zs=s;if(zs===1){zx=0;zy=0}zApply()}
 function zOpen(src,title){zi.src=src;document.getElementById('zt').textContent=title||'';zs=1;zx=0;zy=0;zApply();zv.classList.add('on');document.body.style.overflow='hidden'}
@@ -162,16 +162,16 @@ document.getElementById('zx').onclick=zClose;
 document.getElementById('zp').onclick=()=>zSet(zs*1.6);
 document.getElementById('zm').onclick=()=>zSet(zs/1.6);
 document.getElementById('z0').onclick=()=>zSet(1);
-zv.addEventListener('click',e=>{if(e.target===zv)zClose()});
+zv.addEventListener('click',e=>{if(moved>6){moved=0;return}if(e.target===zv&&zs===1)zClose()});
 document.addEventListener('keydown',e=>{if(!zv.classList.contains('on'))return;if(e.key==='Escape')zClose();if(e.key==='+'||e.key==='=')zSet(zs*1.4);if(e.key==='-')zSet(zs/1.4)});
 zv.addEventListener('wheel',e=>{e.preventDefault();zSet(zs*(e.deltaY<0?1.2:1/1.2),e.clientX,e.clientY)},{passive:false});
-zi.addEventListener('dblclick',e=>zSet(zs>1?1:2.5,e.clientX,e.clientY));
+let lastMove=0;zi.addEventListener('dblclick',e=>{if(moved>6||Date.now()-lastMove<400)return;zSet(zs>1?1:2.5,e.clientX,e.clientY)});
 zi.addEventListener('dragstart',e=>e.preventDefault());
-zv.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;zv.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});last={x:e.clientX,y:e.clientY};if(pts.size===2){const[a,b]=[...pts.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:zs}}zi.classList.add('drag')});
-zv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+zv.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;zv.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});last={x:e.clientX,y:e.clientY};if(pts.size===1){moved=0;downAt={x:e.clientX,y:e.clientY}}if(pts.size===2){const[a,b]=[...pts.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:zs}}zi.classList.add('drag')});
+zv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;if(downAt)moved=Math.max(moved,Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y));if(pts.size===2)moved=99;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(pts.size===2&&pinch){const[a,b]=[...pts.values()];zSet(pinch.s*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d,(a.x+b.x)/2,(a.y+b.y)/2);return}
   if(pts.size===1&&zs>1&&last){zx+=e.clientX-last.x;zy+=e.clientY-last.y;zApply()}last={x:e.clientX,y:e.clientY}});
-const zUp=e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;last=pts.size?[...pts.values()][0]:null;if(!pts.size)zi.classList.remove('drag')};
+const zUp=e=>{if(moved>6)lastMove=Date.now();pts.delete(e.pointerId);if(pts.size<2)pinch=null;last=pts.size?[...pts.values()][0]:null;if(!pts.size)zi.classList.remove('drag')};
 zv.addEventListener('pointerup',zUp);zv.addEventListener('pointercancel',zUp);
 </script>
 </body>
