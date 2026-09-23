@@ -61,6 +61,15 @@ dialog .duo img{object-fit:contain;background:#1b1916}
 .more{flex:none;border:1px solid var(--line);background:transparent;border-radius:999px;width:34px;height:34px;font:600 1rem var(--serif);color:var(--sepia-d);cursor:pointer}
 .more:hover{background:var(--paper)}
 
+.duo img{cursor:zoom-in}
+.zv{position:fixed;inset:0;z-index:100;background:rgba(15,10,6,.96);display:none;touch-action:none;user-select:none;overflow:hidden}
+.zv.on{display:block}
+.zv img{position:absolute;left:50%;top:50%;max-width:94vw;max-height:88vh;transform-origin:center;will-change:transform;cursor:grab}
+.zv img.drag{cursor:grabbing}
+.zv .zx{position:absolute;right:14px;top:14px;z-index:2;width:44px;height:44px;border-radius:50%;border:0;background:#fff2;color:#fff;font-size:1.5rem;cursor:pointer}
+.zv .zb{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:2;display:flex;gap:8px}
+.zv .zb button{width:44px;height:44px;border-radius:50%;border:0;background:#fff2;color:#fff;font:600 1.3rem var(--sans);cursor:pointer}
+.zv .zt{position:absolute;left:16px;top:18px;z-index:2;color:#f3e6cf;font:600 .95rem var(--sans);text-shadow:0 1px 3px #000}
 dialog{border:0;border-radius:16px;padding:0;max-width:760px;width:calc(100% - 24px);background:var(--card);color:var(--ink)}
 dialog::backdrop{background:#211d18cc}
 .dlg-body{padding:18px 20px 20px}
@@ -101,6 +110,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
   </div>
 </footer>
 
+<div class="zv" id="zv" role="dialog" aria-label="Priblíženie fotky">
+  <span class="zt" id="zt"></span>
+  <button class="zx" id="zx" aria-label="Zavrieť">×</button>
+  <img id="zi" alt="">
+  <div class="zb"><button id="zm" aria-label="Oddialiť">−</button><button id="z0" aria-label="Pôvodná veľkosť">⟲</button><button id="zp" aria-label="Priblížiť">+</button></div>
+</div>
 <dialog id="dlg">
   <button class="x" aria-label="Zavrieť" onclick="dlg.close()">×</button>
   <div id="dlg-in"></div>
@@ -134,6 +149,30 @@ grid.addEventListener('click',e=>{
   dlg.showModal();
 });
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+// --- približovanie fotiek ---
+const zv=document.getElementById('zv'),zi=document.getElementById('zi');
+let zs=1,zx=0,zy=0;const pts=new Map();let last=null,pinch=null;
+function zApply(){zi.style.transform=`translate(calc(-50% + ${zx}px),calc(-50% + ${zy}px)) scale(${zs})`}
+function zSet(s,cx,cy){s=Math.min(8,Math.max(1,s));if(cx!==undefined){const r=zv.getBoundingClientRect(),ox=cx-r.width/2,oy=cy-r.height/2;zx=ox-(ox-zx)*s/zs;zy=oy-(oy-zy)*s/zs}zs=s;if(zs===1){zx=0;zy=0}zApply()}
+function zOpen(src,title){zi.src=src;document.getElementById('zt').textContent=title||'';zs=1;zx=0;zy=0;zApply();zv.classList.add('on');document.body.style.overflow='hidden'}
+function zClose(){zv.classList.remove('on');document.body.style.overflow='';pts.clear()}
+document.addEventListener('click',e=>{const im=e.target.closest('.duo img');if(!im)return;const lb=im.parentElement.querySelector('.lb');const card=im.closest('.card,dialog');const h=card&&card.querySelector('h3');const tt=(h?h.textContent+' — ':'')+(lb?lb.textContent:'');if(dlg.open)dlg.close();zOpen(im.src,tt)});
+document.getElementById('zx').onclick=zClose;
+document.getElementById('zp').onclick=()=>zSet(zs*1.6);
+document.getElementById('zm').onclick=()=>zSet(zs/1.6);
+document.getElementById('z0').onclick=()=>zSet(1);
+zv.addEventListener('click',e=>{if(e.target===zv)zClose()});
+document.addEventListener('keydown',e=>{if(!zv.classList.contains('on'))return;if(e.key==='Escape')zClose();if(e.key==='+'||e.key==='=')zSet(zs*1.4);if(e.key==='-')zSet(zs/1.4)});
+zv.addEventListener('wheel',e=>{e.preventDefault();zSet(zs*(e.deltaY<0?1.2:1/1.2),e.clientX,e.clientY)},{passive:false});
+zi.addEventListener('dblclick',e=>zSet(zs>1?1:2.5,e.clientX,e.clientY));
+zi.addEventListener('dragstart',e=>e.preventDefault());
+zv.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;zv.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});last={x:e.clientX,y:e.clientY};if(pts.size===2){const[a,b]=[...pts.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:zs}}zi.classList.add('drag')});
+zv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pts.size===2&&pinch){const[a,b]=[...pts.values()];zSet(pinch.s*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d,(a.x+b.x)/2,(a.y+b.y)/2);return}
+  if(pts.size===1&&zs>1&&last){zx+=e.clientX-last.x;zy+=e.clientY-last.y;zApply()}last={x:e.clientX,y:e.clientY}});
+const zUp=e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;last=pts.size?[...pts.values()][0]:null;if(!pts.size)zi.classList.remove('drag')};
+zv.addEventListener('pointerup',zUp);zv.addEventListener('pointercancel',zUp);
 </script>
 </body>
 </html>
